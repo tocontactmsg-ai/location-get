@@ -86,6 +86,48 @@
             }
         });
     </script>
+<div id="pwa-install-banner" class="hidden fixed bottom-4 left-4 right-4 bg-white shadow-2xl rounded-2xl p-4 border border-emerald-100 z-[9999] animate-bounce">
+    <div class="flex items-center gap-4">
+        <div class="w-12 h-12 bg-emerald-600 rounded-xl flex items-center justify-center text-white text-2xl shadow-lg">
+            <i class="fas fa-store"></i>
+        </div>
+        <div class="flex-1">
+            <h4 class="font-bold text-sm text-slate-800">تطبيق سوق الدلالة</h4>
+            <p class="text-[10px] text-slate-500">ثبت التطبيق على هاتفك لسهولة الطلب</p>
+        </div>
+        <button id="install-button" class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-xs font-bold">تثبيت</button>
+        <button id="close-banner" class="text-slate-400 p-1"><i class="fas fa-times"></i></button>
+    </div>
+</div>
 
+<script>
+    let deferredPrompt;
+    const banner = document.getElementById('pwa-install-banner');
+    const installBtn = document.getElementById('install-button');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        // منع المتصفح من إظهار النافذة التلقائية
+        e.preventDefault();
+        deferredPrompt = e;
+        // إظهار النافذة الخاصة بنا
+        banner.classList.remove('hidden');
+    });
+
+    installBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                console.log('User accepted the install prompt');
+            }
+            deferredPrompt = null;
+            banner.classList.add('hidden');
+        }
+    });
+
+    document.getElementById('close-banner').addEventListener('click', () => {
+        banner.classList.add('hidden');
+    });
+</script>
 </body>
 </html>
