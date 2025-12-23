@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إرسال الموقع |  الدلالة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Cairo', sans-serif; background-color: #f8fafc; }
+        .btn-wa { background: #25D366; color: white; transition: 0.3s; }
+        .btn-wa:hover { background: #128C7E; transform: scale(1.02); }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div class="max-w-sm w-full bg-white rounded-3xl shadow-xl p-8 text-center border border-emerald-50">
+        <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-map-marker-alt text-3xl"></i>
+        </div>
+
+        <h1 class="text-2xl font-bold text-slate-800 mb-2">تحديد موقع المحل</h1>
+        <p class="text-slate-500 text-sm mb-8">اضغط على الزر بالأسفل لجلب موقعك الحالي وإرساله لنا عبر الواتساب</p>
+
+        <div id="status" class="hidden mb-4 p-3 bg-blue-50 text-blue-700 text-xs rounded-lg animate-pulse">
+            جاري تحديد إحداثيات موقعك...
+        </div>
+
+        <button id="sendLocation" class="w-full py-4 btn-wa rounded-2xl font-bold text-lg flex items-center justify-center gap-3 shadow-lg shadow-green-100">
+            <i class="fab fa-whatsapp text-2xl"></i>
+            إرسال موقعي الآن
+        </button>
+
+        <p id="errorMsg" class="mt-4 text-red-500 text-xs hidden"></p>
+        
+        <footer class="mt-10 text-[10px] text-slate-400 uppercase tracking-widest">
+            SOUG.ELDELALA.COM
+        </footer>
+    </div>
+
+    <script>
+        const btn = document.getElementById('sendLocation');
+        const status = document.getElementById('status');
+        const errorMsg = document.getElementById('errorMsg');
+        const waNumber = "249998615193"; // رقم الواتساب الخاص بك
+
+        btn.addEventListener('click', () => {
+            status.classList.remove('hidden');
+            btn.disabled = true;
+            btn.style.opacity = "0.7";
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        const mapLink = `https://www.google.com/maps?q=${lat},${lng}`;
+                        
+                        const message = encodeURIComponent(`📍 *موقع المحل الجديد*\n\nأهلاً سوق الدلالة، هذا هو موقع محلي على الخريطة:\n${mapLink}`);
+                        
+                        // توجيه المستخدم للواتساب
+                        window.location.href = `https://wa.me/${waNumber}?text=${message}`;
+                        
+                        status.innerText = "تمت العملية بنجاح! يتم الآن فتح واتساب...";
+                    },
+                    (error) => {
+                        status.classList.add('hidden');
+                        btn.disabled = false;
+                        btn.style.opacity = "1";
+                        errorMsg.classList.remove('hidden');
+                        
+                        switch(error.code) {
+                            case error.PERMISSION_DENIED:
+                                errorMsg.innerText = "يجب السماح بالوصول للموقع لإتمام العملية.";
+                                break;
+                            default:
+                                errorMsg.innerText = "حدث خطأ في جلب الموقع، تأكد من تشغيل الـ GPS.";
+                        }
+                    },
+                    { enableHighAccuracy: true }
+                );
+            } else {
+                alert("المتصفح لا يدعم جلب الموقع.");
+            }
+        });
+    </script>
+
+</body>
+</html>
