@@ -58,7 +58,7 @@
                         const lng = position.coords.longitude;
                         const mapLink = `https://www.google.com/maps?q=${lat},${lng}`;
                         
-                        const message = encodeURIComponent(`📍 *الموقع    *\n\nأهلاً الدلالة، هذا هو موقعي على الخريطة:\n${mapLink}`);
+                        const message = encodeURIComponent(`📍 *الموقع*\n\n : أهلاً الدلالة، هذا هو موقعي على الخريطة:\n${mapLink}`);
                         
                         // توجيه المستخدم للواتساب
                         window.location.href = `https://wa.me/${waNumber}?text=${message}`;
