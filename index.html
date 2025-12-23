@@ -20,7 +20,8 @@
             <i class="fas fa-map-marker-alt text-3xl"></i>
         </div>
 
-        <h1 class="text-2xl font-bold text-slate-800 mb-2">تحديد موقع المحل</h1>
+        <h1 class="text-2xl font-bold text-slate-800 mb-2">تحديد الموقع   </h1>
+         <h1 class="text-2xl font-bold text-slate-800 mb-2">قم بتفعيل ال لوكيشن Location  </h1>
         <p class="text-slate-500 text-sm mb-8">اضغط على الزر بالأسفل لجلب موقعك الحالي وإرساله لنا عبر الواتساب</p>
 
         <div id="status" class="hidden mb-4 p-3 bg-blue-50 text-blue-700 text-xs rounded-lg animate-pulse">
@@ -57,7 +58,7 @@
                         const lng = position.coords.longitude;
                         const mapLink = `https://www.google.com/maps?q=${lat},${lng}`;
                         
-                        const message = encodeURIComponent(`📍 *موقع المحل الجديد*\n\nأهلاً سوق الدلالة، هذا هو موقع محلي على الخريطة:\n${mapLink}`);
+                        const message = encodeURIComponent(`📍 *الموقع    *\n\nأهلاً الدلالة، هذا هو موقعي على الخريطة:\n${mapLink}`);
                         
                         // توجيه المستخدم للواتساب
                         window.location.href = `https://wa.me/${waNumber}?text=${message}`;
